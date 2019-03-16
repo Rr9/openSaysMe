@@ -8,17 +8,15 @@ to ESP8266 board to run functions. Each GET request has its own function that <b
 is called aswell as a 404 error page. Get URLs can be called directly without <br>
 going through the web interface. 
 
-<b>Variables</b>
-<code>IPAddress <b>ip</b>(#,#,#,#);</code>: Static IP of device to request from router <br>
-<code><IPAddress <b>gateway</b>(#,#,#,#);/code> <br>
-<code>IPAddress <b>subnet</b>(#,#,#,#);</code> <br>
+<b>Variables</b><br>
+<code>IPAddress <b>ip</b>(#,#,#,#)</code>: Static IP of device to request from router <br>
+<code><IPAddress <b>gateway</b>(#,#,#,#)</code> <br>
+<code>IPAddress <b>subnet</b>(#,#,#,#)</code> <br>
 <code>const char* <b>ssid</b></code> <br>
 <code>const char* <b>password</b></code> <br>
 <code>bool <b>doorOpen</b></code>: Current position of the door <br>
 <code>bool  <b>lightOn</b></code>: Current state of lights <br>
 <code>String <b>webpage</b></code> HTML body <br>
-<code></code>
-
 
 <b>Pins Used:</b><table>
   <tr>
