@@ -48,12 +48,33 @@ Current static IP : <code>192.168.1.144</code> <br>
 
 <b>TODO: </b>
 <ol>
-  <li>Make webpage more user friendly with larger buttons and display current door & light status. </li>
-  <li>Find better way to store web page instead of all in one variable</li>
-  <li>Put in proximity sensor or limit switch to detect open or closed door</li>
-  <li>Put photo resistor to detect day light and turn light on at night when door is opened</li>
+	<li>Make webpage more user friendly with larger buttons and display current door & light status. </li>
+	<li>Find better way to store web page instead of all in one variable</li>
+	<li>Put in proximity sensor or limit switch to detect open or closed door</li>
+	<li>Put photo resistor to detect day light and turn light on at night when door is opened</li>
 </ol>
 
 <b>Untested: </b> <br>
 OTA updating abilities are currently untested but code is in there for possible<br>
 future use. 
+
+<b>Hardware Setup</b>
+
+<ul>
+	<li>1x Wemos D1 Mini (or other ESP8266 board)</li>
+	<li>2x Relays</li>
+	<li>Jumper/Dupoint Wires</li>
+</ul>
+
+<b>Diagram</b><br>
+<img src="https://raw.githubusercontent.com/Rr9/openSaysMe/master/Diagram/Diagram.png"/>
+
+<b>Images</b><br>
+<img src="https://raw.githubusercontent.com/Rr9/openSaysMe/master/Images/roughLayout.jpg"/>
+Rough Layout. You can tell how rough this is. I am using a solder spool as an antenna haha.<br>
+<img src="https://raw.githubusercontent.com/Rr9/openSaysMe/master/Images/topSide.jpg"/>
+This is the top side of the final board that i attaced to the garage door opener. <br>
+<img src="https://raw.githubusercontent.com/Rr9/openSaysMe/master/Images/attached2.jpg"/>
+Bottom side of the board <br>
+<img src="https://raw.githubusercontent.com/Rr9/openSaysMe/master/Images/attached1.jpg"/>
+Bottom attached to the opener; yet to plug in the AC wires to the relay on the bottom side <br>
