@@ -10,7 +10,7 @@ going through the web interface.
 
 <b>Variables</b><br>
 <code>IPAddress <b>ip</b>(#,#,#,#)</code>: Static IP of device to request from router <br>
-<code><IPAddress <b>gateway</b>(#,#,#,#)</code> <br>
+<code>IPAddress <b>gateway</b>(#,#,#,#)</code> <br>
 <code>IPAddress <b>subnet</b>(#,#,#,#)</code> <br>
 <code>const char* <b>ssid</b></code> <br>
 <code>const char* <b>password</b></code> <br>
