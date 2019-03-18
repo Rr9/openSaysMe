@@ -94,20 +94,20 @@ future use.
 <b>Images</b>
 <figure style="border:2px solid grey">
 <img src="https://raw.githubusercontent.com/Rr9/openSaysMe/master/Images/roughLayout.jpg" height="60%" width="60%"/>
-<figcaption>Rough Layout. You can tell how rough this is. I am using a solder spool as an antenna haha.</figcaption>
-</figure><br>
+<figcaption>Rough Layout. You can tell how rough this is. I am using a solder spool as an antenna haha.</figcaption><br>
+</figure>
 
 <figure style="border:2px solid grey">
 <img src="https://raw.githubusercontent.com/Rr9/openSaysMe/master/Images/topSide.jpg" height="60%" width="60%"/>
-<figcaption>This is the top side of the final board that i attaced to the garage door opener.</figcaption>
-</figure><br>
+<figcaption>This is the top side of the final board that i attaced to the garage door opener.</figcaption><br>
+</figure>
 
 <figure style="border:2px solid grey">
 <img src="https://raw.githubusercontent.com/Rr9/openSaysMe/master/Images/attached2.jpg" height="60%" width="60%"/>
-<figcaption>Bottom side of the board</figcaption>
-</figure><br>
+<figcaption>Bottom side of the board</figcaption><br>
+</figure>
 
 <figure style="border:2px solid grey">
 <img src="https://raw.githubusercontent.com/Rr9/openSaysMe/master/Images/attached1.jpg" height="60%" width="60%"/>
-<figcaption>Bottom attached to the opener; yet to plug in the AC wires to the relay on the bottom side</figcaption>
-</figure><br>
+<figcaption>Bottom attached to the opener; yet to plug in the AC wires to the relay on the bottom side</figcaption><br>
+</figure>
