@@ -69,6 +69,8 @@ Current static IP : <code>192.168.1.144</code> <br>
 <b>Untested: </b> <br>
 OTA updating abilities are currently untested but code is in there for possible<br>
 future use. 
+	
+<hr>
 
 <b>Hardware Setup</b>
 
