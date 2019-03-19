@@ -4,28 +4,35 @@
 #include <WiFiClient.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
+#include <FS.h>
 
 void connect();
 void redirect();
 void handleRoot();
 void handleNotFound();
+void servePage();
+void apiStatus();
+void calibrate();
+void restartESP();
+void updateESP();
 
 IPAddress ip(192, 168, 1, 144);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
-const char* ssid = "SSID";
-const char* password = "NETWORK PASSWORD";
+const char* ssid = "Sikdar";
+const char* password = "suvrajit";
 bool doorOpen = false;
 bool lightOn = false;
-String webpage = "<form action=\"/DOOR\" method=\"GET\"><input type=\"submit\" value=\"Open/Close\"></form> <form action=\"/LIGHT\" method=\"GET\"><input type=\"submit\" value=\"Lights\"></form>";
 const int doorSwitch = 4;
 const int lightSwitch = 0;
+
+bool otaFlag = true;
+uint16_t timeElapsed = 0;
 
 ESP8266WebServer server(80); 
 
 void setup() {
   //Serial.begin(115200); 
-  //Serial.println("Serial started");
 
   pinMode(LED_BUILTIN, OUTPUT); 
   pinMode(doorSwitch, OUTPUT); 
@@ -35,23 +42,25 @@ void setup() {
   
 //  Serial.print("Connecting to ");
 //  Serial.print(ssid); 
-//  Serial.println(" ...");
 
   int i = 0;
+  connect();
+   
 //  Serial.print("MAC: ");
 //  Serial.println(WiFi.macAddress());
-  connect();
-  
-//  Serial.println("Connection established!");  
-//  Serial.print("IP address: ");
-//  Serial.println(WiFi.localIP());
-//  Serial.println("Connection established!");  
 //  Serial.print("IP address: ");
 //  Serial.println(WiFi.localIP());
 
+  SPIFFS.begin();
+
+  
   server.on("/", HTTP_GET, handleRoot);     
   server.on("/DOOR", HTTP_GET, handleDoor);  
   server.on("/LIGHT", HTTP_GET, handleLight); 
+  server.on("/status", HTTP_GET, apiStatus); 
+  server.on("/calibrate", HTTP_GET, calibrate); 
+  server.on("/restart", HTTP_GET, restartESP); 
+  server.on("/update", HTTP_GET, updateESP); 
   server.onNotFound(handleNotFound);
 
   server.begin();
@@ -60,15 +69,28 @@ void setup() {
   digitalWrite(lightSwitch, HIGH);
   digitalWrite(doorSwitch, HIGH);
   
+
+  //ArduinoOTA.setPassword("admin");
   ArduinoOTA.onStart([]() {
-    Serial.println("Start");
-   });
+    String type;
+    if (ArduinoOTA.getCommand() == U_FLASH) {
+      type = "sketch";
+    } else { // U_SPIFFS
+      type = "filesystem";
+    }
+
+    // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
+    Serial.println("Start updating " + type);
+  });
+  
   ArduinoOTA.onEnd([]() {
-    Serial.println("\nEnd");
+    Serial.println("\nUpdate Ended");
    });
+   
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
     Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
    });
+   
   ArduinoOTA.onError([](ota_error_t error) {
       Serial.printf("Error[%u]: ", error);
       if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
@@ -81,14 +103,23 @@ void setup() {
 }
 
 void loop() {
+  if(otaFlag){
+    uint16_t timeStart = millis();
+    while(timeElapsed < 30000){
+      ArduinoOTA.handle();
+      timeElapsed = millis()-timeStart;
+      delay(10);
+    }
+    otaFlag = false;
+  }
   server.handleClient(); 
-  ArduinoOTA.handle();
+  
   if(WiFi.status() != WL_CONNECTED){
     int j = 0;
-    while (WiFi.status() != WL_CONNECTED) { // Wait for the Wi-Fi to connect
-      delay(500);
-      Serial.println(++j);
-      delay(500);
+      while (WiFi.waitForConnectResult() != WL_CONNECTED) {
+      Serial.println("Connection Failed! Rebooting...");
+      delay(5000);
+      ESP.restart();
     }
   }
 }
@@ -116,14 +147,22 @@ void connect(){
 //  Serial.println(WiFi.localIP());
 }
 
-void handleRoot() {
-  server.send(200, "text/html", webpage);
+void handleRoot() {  
+  File webpageFile = SPIFFS.open("/index.html", "r");
+  server.streamFile(webpageFile, "text/html");
+  //server.send(200, "text/html", webpageFile);
+  webpageFile.close();
 }
 
 void handleDoor() {                          
   digitalWrite(doorSwitch,!digitalRead(doorSwitch));
-  redirect();
-  delay(500);
+  doorOpen = !doorOpen;
+  if(server.arg("api").toInt()!=1){
+    redirect();
+  }else{
+    server.send(200,"text/plain", "Done");
+  }
+  delay(200);
   digitalWrite(doorSwitch,!digitalRead(doorSwitch));
 }
 
@@ -131,7 +170,12 @@ void handleLight() {
   lightOn = !lightOn;
   digitalWrite(lightSwitch,!digitalRead(lightSwitch));
   delay(50);
-  redirect();
+  doorOpen = !doorOpen;
+  if(server.arg("api").toInt()!=1){
+    redirect();
+  }else{
+    server.send(200,"text/plain", "Done"); 
+  }
 }
 
 void handleNotFound(){
@@ -143,3 +187,24 @@ void redirect(){
   server.send(303);                         // Send it back to the browser with an HTTP status 303 (See Other) to redirect
 }
 
+void apiStatus(){
+  server.send(200,"text/plain", String(doorOpen) + "," + String(lightOn));
+}
+
+void calibrate(){
+  doorOpen = false;
+  lightOn = false;
+  server.send(200,"text/plain", String(doorOpen) + "," + String(lightOn));
+}
+
+void restartESP(){
+    server.send(200,"text/plain", "Restarting...");
+    delay(1000);
+    ESP.restart();
+}
+
+void updateESP(){
+    server.send(200,"text/plain", "Update mode...");
+    otaFlag = true;
+    timeElapsed = 0;
+}
