@@ -58,8 +58,8 @@ Current static IP : <code>192.168.1.144</code> <br>
 
 <b>TODO: </b>
 <ol>
-	<li>Make webpage more user friendly with larger buttons and display current door & light status. </li>
-	<li>Find better way to store web page instead of all in one variable</li>
+	<li>DONE - Make webpage more user friendly with larger buttons and display current door & light status. </li>
+	<li>DONE - Find better way to store web page instead of all in one variable</li>
 	<li>Put in proximity sensor or limit switch to detect open or closed door</li>
 	<li>Put photo resistor to detect day light and turn light on at night when door is opened</li>
 </ol>
